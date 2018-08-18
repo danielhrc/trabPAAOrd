@@ -1,25 +1,32 @@
 package ordenacao;
 
 public class OrdecaoInterna {
-	public void quick(int vet[], int esq, int dir){
-	    int pivo = esq, i,ch,j;         
-	    for(i=esq+1;i<=dir;i++){        
-	        j = i;                      
-	        if(vet[j] < vet[pivo]){     
-	            ch = vet[j];               
-	            while(j > pivo){           
-	                vet[j] = vet[j-1];      
-	                j--;                    
-	            }
-	            vet[j] = ch;               
-	            pivo++;                    
-	        }
-	    }
-	    if(pivo-1 >= esq){              
-	        quick(vet,esq,pivo-1);      
-	    }
-	    if(pivo+1 <= dir){              
-	        quick(vet,pivo+1,dir);      
-	    }
-	 }
+	public static void QuickSort(int v[], int esquerda, int direita) {
+        int temp, pivo;
+        int i, j;
+        i = esquerda;
+        j = direita;
+        pivo = v[(esquerda + direita) / 2];
+        while(i <= j) {
+            while(v[i] < pivo && i < direita) {                
+                i++;
+            }
+            while(v[j] > pivo && j > esquerda) {                
+                j--;
+            }
+            if(i <= j) {            		
+                temp = v[i];
+                v[i] = v[j];
+                v[j] = temp;
+                i++;
+                j--;
+            }
+        }
+        if(j > esquerda){
+            QuickSort(v, esquerda, j);            
+        }
+        if(i < direita){
+            QuickSort(v, i, direita);            
+        }
+    }
 }
