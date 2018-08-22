@@ -2,7 +2,9 @@ package principal;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import ordenacao.OrdecaoInterna;
  
@@ -10,6 +12,13 @@ public class Main {
  
 public static void main(String[] args) {
     String filename = "arquivo.txt";
+    
+    int numeroDoLogger=0;
+    String logFileName = "log"+numeroDoLogger+".txt";
+    FileWriter arquivoLog;
+    ArrayList<FileWriter> listaLog = new ArrayList<FileWriter> ();
+    boolean logController=true;
+ 
     try {
       FileReader arq = new FileReader(filename);
       BufferedReader lerArq = new BufferedReader(arq); 
@@ -38,10 +47,23 @@ public static void main(String[] args) {
     		  OrdecaoInterna.QuickSort(vetx, 0, vetx.length - 1);
     		  vetvetint[k] = vetx;
     		  while (x < vetx.length) {
-    		        System.out.println(vetx[x]); 
+    			  if(logController) {
+    				  arquivoLog = new FileWriter(logFileName);
+    				  listaLog.add(arquivoLog);
+    				  logController=false;
+    				  numeroDoLogger++;
+        			  
+        		  }
+    			   System.out.println(vetx[x]); 
+    		      listaLog.get(numeroDoLogger-1).write(String.valueOf(vetx[x])+" ");    		        
     		        x += 1;
     		      }
+    		  
+    		  
+    		  
+    		  
     		  x = 0;
+    		  
     		  k++;
     		  j = 1;
     		  //for(int f = 0;f < vetx.length; f++) {
@@ -49,6 +71,8 @@ public static void main(String[] args) {
     		  //}
     	  }
     	  j++;
+    	  listaLog.get(numeroDoLogger-1).close();
+    	  logController=true;
       }      
       arq.close();
     } catch (IOException e) {
