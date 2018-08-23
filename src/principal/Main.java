@@ -4,18 +4,21 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import ordenacao.OrdecaoInterna;
  
 public class Main {
  
-public static void main(String[] args) {
+public static void main(String[] args) throws IOException {
     String filename = "arquivo.txt";
     
     int numeroDoLogger=0;
     String logFileName = "log"+numeroDoLogger+".txt";
     FileWriter arquivoLog;
+    PrintWriter printer = null;
     ArrayList<FileWriter> listaLog = new ArrayList<FileWriter> ();
     boolean logController=true;
  
@@ -49,18 +52,20 @@ public static void main(String[] args) {
     		  while (x < vetx.length) {
     			  if(logController) {
     				  arquivoLog = new FileWriter(logFileName);
+    				  
     				  listaLog.add(arquivoLog);
+    				  printer = new PrintWriter(listaLog.get(numeroDoLogger));
     				  logController=false;
-    				  numeroDoLogger++;
+    				  printer.printf("Inicio Log \n");
         			  
         		  }
     			   System.out.println(vetx[x]); 
-    		      listaLog.get(numeroDoLogger-1).write(String.valueOf(vetx[x])+" ");    		        
+    			  
+    			   printer.printf( "%d \n", vetx[x]);
+    		      
     		        x += 1;
     		      }
-    		  
-    		  
-    		  
+    		   		  
     		  
     		  x = 0;
     		  
@@ -71,7 +76,10 @@ public static void main(String[] args) {
     		  //}
     	  }
     	  j++;
-    	  listaLog.get(numeroDoLogger-1).close();
+    	  printer.printf("\n Fim do Log \n");
+    	  printer.close();
+    	  listaLog.get(numeroDoLogger).close();
+    	  numeroDoLogger++;
     	  logController=true;
       }      
       arq.close();
